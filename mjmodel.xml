@@ -1,0 +1,28 @@
+<mujoco model="MuJoCo Model">
+  <compiler angle="radian"/>
+  <option timestep="0.001" integrator="RK4"/>
+  <worldbody>
+    <geom size="1 1 0.1" type="plane" rgba="0.9 0 0 1"/>
+    <light pos="0 0 3" dir="0 0 -1" diffuse="0.5 0.5 0.5"/>
+    <body name="torso" pos="0 0 2">
+      <joint name="x" pos="0 0 0" axis="1 0 0" type="slide"/>
+      <joint name="z" pos="0 0 0" axis="0 0 1" type="slide"/>
+      <geom size="0.1" mass="1" rgba="0.9 0.9 0.9 1"/>
+      <body name="leg" pos="0 0 -0.5">
+        <joint name="hip" pos="0 0 0.5" axis="0 -1 0"/>
+        <geom size="0.05 0.5" type="cylinder" mass="1" rgba="0 0.9 0 1"/>
+        <body name="foot" pos="0 0 -0.75">
+          <joint name="knee" pos="0 0 0.25" axis="0 0 -1" type="slide"/>
+          <geom size="0.01 0.125" pos="0 0 0.125" type="cylinder" mass="0.1" rgba="0 0.9 0.9 1"/>
+          <geom size="0.025" mass="0.1" rgba="0.9 0.9 0.9 1"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <general name="pservo_hip" joint="hip" biastype="affine" gainprm="0"/>
+    <general name="vservo_hip" joint="hip" biastype="affine" gainprm="0"/>
+    <general name="pservo_knee" joint="knee" biastype="affine" gainprm="0"/>
+    <general name="vservo_knee" joint="knee" biastype="affine" gainprm="0"/>
+  </actuator>
+</mujoco>
