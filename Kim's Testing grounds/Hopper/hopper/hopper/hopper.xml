@@ -1,34 +1,49 @@
 <mujoco>
 
 	<option timestep="0.001" integrator="RK4" gravity="0 0 -9.81">
-		
+	
 	</option>
 
 	<worldbody>
     	<light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
-		<geom type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
+		<geom type="plane" size="5 5 0.1" rgba=".9 0 0 1"/>
+
 		<body name = "torso" pos="0 0 2">
-			<joint name="x" type ="slide" pos="0 0 0" axis="1 0 0"/>
-			<joint name="z" type ="slide" pos="0 0 0" axis="0 0 1"/>
-			<geom type="sphere" size="0.1" rgba="0.9 0.9 0.9 1" mass="1"/>
-			<body name ="leg" pos="0 0 -0.5" euler="0 0 0">
-				<joint name="hip" type="hinge" pos="0 0 0.5" axis="0 -1 0" />
+			<joint name="x" type ="slide" pos="45 0 45" axis="1 0 0"/> // position in the x pos
+			<joint name="z" type ="slide" pos="45 0 45" axis="0 0 1"/>
+			<geom type="sphere" size="0.15" pos="0.45 0 -0.05" rgba="0.9 0.9 0.9 1" mass="2"/>
+			
+			//leg = green cylinder
+		
+			<body name ="leg" pos="0 0 -0.5" euler="0 45 45">
+				<joint name="hip" type="hinge" pos="0 0 0.5" axis="0 -1 0" damping="0.1"/> <!--// motion alone the x axis !-->
 				<geom type="cylinder" size=".05 .5" rgba="0 .9 0 1" mass="1"/>
 				<body name = "foot" pos="0 0 -0.75">
-				<joint name="knee" type ="slide" pos="0 0 0.25" axis="0 0 -1"/>
-				<geom type="cylinder"  pos="0 0 0.125" size="0.01 0.125" rgba="0 0.9 0.9 1" mass="0.1"/>
-				<geom type="sphere" size="0.025" rgba="0.9 0.9 0.9 1" mass="0.1"/>
+				<joint name="knee" type ="slide" pos="0 0 0.25" axis="0 0 -1" damping="0.1"/>
+				<geom type="sphere"  pos="0 0 0.125" size="0.01 0.125" rgba="0 0.9 0.9 1" mass="0.1"/>  
+				<geom type="sphere" size="0.025" rgba="0.9 0.9 0.9 1" mass="0.1"/> 
 				</body>
 			</body>
 		</body>
 	</worldbody>
 
+
+
+	<!--<actuator>
+		<position name="pservo_hip" joint="hip" kp="100"/>
+		<velocity name="vservo_hip" joint="hip" kv="10"/>
+		<position name="pservo_knee" joint="knee" kp="1000"/>
+		<velocity name="vservo_knee" joint="knee" kv="10"/>
+	</actuator> !-->
+	//applies torque 
 	<actuator>
-		<position name="pservo_hip" joint="hip" kp="0"/>
+		<position name="pservo_hip" joint="hip" kp="00" />
 		<velocity name="vservo_hip" joint="hip" kv="0"/>
-		<position name="pservo_knee" joint="knee" kp="0"/>
+		<position name="pservo_knee" joint="knee" kp="2000"/>
 		<velocity name="vservo_knee" joint="knee" kv="0"/>
+		
 	</actuator>
+
 
 
 </mujoco>
