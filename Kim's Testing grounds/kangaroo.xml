@@ -1,0 +1,36 @@
+<mujoco model="Kangaroo">
+  <compiler angle="radian" inertiafromgeom="true"/>
+  <option timestep="0.001" integrator="RK4"/>
+  <default>
+    <joint armature="1" damping="1" limited="true"/>
+    <geom conaffinity="1" condim="1" contype="1" margin="0.001" material="geom" rgba="0.8 0.6 .4 1" solimp=".8 .8 .01" solref=".02 1"/>
+    <motor ctrllimited="true" ctrlrange="-.4 .4"/>
+  </default>
+  <visual>
+    <map znear="0.02"/>
+  </visual>
+  <worldbody>
+    <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
+    <geom conaffinity="1" condim="3" name="floor" pos="0 0 0" rgba="0.9 0 0 1" size="20 20 .125" type="plane" material="MatPlane"/>
+    <body name="torso" pos="0 0 2">
+      <camera name="track" mode="trackcom" pos="0 -3 -0.25" xyaxes="1 0 0 0 0 1"/>
+      <joint armature="0" axis="1 0 0" damping="0" limited="false" name="x" pos="0 0 0" stiffness="0" type="slide"/> <!-- lets us move in x axis -->
+      <joint armature="0" axis="0 0 1" damping="0" limited="false" name="z" pos="0 0 0" stiffness="0" type="slide"/> <!-- lets us move in z axis -->
+      <joint armature="0" axis="0 1 0" damping="0" limited="false" name="y" pos="0 0 0" stiffness="0" type="hinge"/> <!-- lets us rotate along the y axis -->
+      <geom type="capsule" size="0.1 0.2" pos="0.45 0 -0.05" rgba="0.9 0.9 0.9 1" mass="2"/> <!-- torso shape -->
+      <body name="leg" pos="0 0 -0.5">
+        <joint name="hip" pos="0 0 0.5" axis="0 1 0"/>
+        <geom size="0.05 0.5" type="cylinder" mass="1" rgba="0 0.9 0 1"/>
+        <body name="foot" pos="0 0 -0.75">
+          <joint name="knee" pos="0 0 0.25" axis="0 0 -1" type="slide"/>
+          <geom size="0.01 0.125" pos="0 0 0.125" type="cylinder" mass="0.1" rgba="0 0.9 0.9 1"/>
+          <geom size="0.025" mass="0.1" rgba="0.9 0.9 0.9 1"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" joint="hip" biastype="affine" gainprm="0"/>
+    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" joint="knee" biastype="affine" gainprm="0"/>
+  </actuator>
+</mujoco>
