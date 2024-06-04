@@ -1,5 +1,5 @@
 <mujoco model="Kangaroo">
-  <compiler angle="degrees" inertiafromgeom="true"/>
+  <compiler angle="degree" inertiafromgeom="true"/>
   <option timestep="0.001" integrator="RK4"/>
   <visual>
     <map znear="0.02"/>
