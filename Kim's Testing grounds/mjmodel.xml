@@ -7,6 +7,7 @@
     <body name="torso" pos="0 0 2">
       <joint armature="0" damping="0" limited="false" name="x" pos="0 0 0" axis="1 0 0" type="slide"/>
       <joint armature="0" damping="0" limited="false" name="z" pos="0 0 0" axis="0 0 1" type="slide"/>
+      <joint armature="0" axis="0 1 0" damping="0" limited="false" name="y" pos="0 0 0" stiffness="0" type="hinge"/>
       <geom size="0.1" mass="1" rgba="0.9 0.9 0.9 1"/>
       <body name="leg" pos="0 0 -0.5">
         <joint name="hip" pos="0 0 0.5" axis="0 -1 0"/>
@@ -20,9 +21,7 @@
     </body>
   </worldbody>
   <actuator>
-    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" name="pservo_hip" joint="hip" biastype="affine" gainprm="0"/>
-    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" name="vservo_hip" joint="hip" biastype="affine" gainprm="0"/>
-    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" name="pservo_knee" joint="knee" biastype="affine" gainprm="0"/>
-    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" name="vservo_knee" joint="knee" biastype="affine" gainprm="0"/>
+    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" joint="hip" biastype="affine" gainprm="0"/>
+    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" joint="knee" biastype="affine" gainprm="0"/>
   </actuator>
 </mujoco>
