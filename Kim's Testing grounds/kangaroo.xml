@@ -19,7 +19,7 @@
         <body name="foot" pos="0 0 -0.75">
           <joint name="foot_joint" pos="0 0 0.25" axis="0 0 -1" type="slide"/>
           <geom size="0.025 0.4" pos="0 0 0" type="cylinder" mass="0.1" rgba="0 0.9 0.9 1"/>
-          <geom size="0.05" mass="0.1" rgba="0.9 0.9 0.9 1"/>
+          <geom size="0.05" pos="0 0 -0.4" mass="0.1" rgba="0.9 0.9 0.9 1"/>
         </body>
       </body>
     </body>
