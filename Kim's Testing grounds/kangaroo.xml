@@ -25,7 +25,7 @@
     </body>
   </worldbody>
   <actuator>
-    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" joint="hip" biastype="affine" gainprm="0"/>
+    <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" joint="leg_joint" biastype="affine" gainprm="0"/>
     <general ctrllimited="true" ctrlrange="-1.0 1.0" gear="1.0" joint="knee" biastype="affine" gainprm="0"/>
   </actuator>
 </mujoco>
