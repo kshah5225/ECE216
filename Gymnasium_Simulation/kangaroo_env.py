@@ -13,7 +13,7 @@ DEFAULT_CAMERA_CONFIG = {
 }
 
 
-class HopperEnv(MujocoEnv, utils.EzPickle):
+class KangarooEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
 
@@ -147,7 +147,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
             "rgb_array",
             "depth_array",
         ],
-        "render_fps": 125,
+        "render_fps": 60, # Gangaroo I changed it to 125,
     }
 
     def __init__(
@@ -197,15 +197,17 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
         if exclude_current_positions_from_observation:
             observation_space = Box(
                 low=-np.inf, high=np.inf, shape=(11,), dtype=np.float64
+                # gangaroo
             )
         else:
             observation_space = Box(
                 low=-np.inf, high=np.inf, shape=(12,), dtype=np.float64
+                # gangaroo
             )
 
         MujocoEnv.__init__(
             self,
-            "hopper.xml",
+            "kangaroo.xml", # gangaroo
             4,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
@@ -246,6 +248,8 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
         return terminated
 
     def _get_obs(self):
+        # gangaroo
+        # What about the other observations?
         position = self.data.qpos.flat.copy()
         velocity = np.clip(self.data.qvel.flat.copy(), -10, 10)
 
@@ -256,6 +260,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
         return observation
 
     def step(self, action):
+        # gangaroo
         x_position_before = self.data.qpos[0]
         self.do_simulation(action, self.frame_skip)
         x_position_after = self.data.qpos[0]
