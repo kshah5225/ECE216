@@ -131,14 +131,6 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
 | `healthy_angle_range`                        | **tuple** | `(-0.2, 0.2)`         | The angle given by `observation[1]` (if `exclude_current_positions_from_observation=True`, else `observation[2]`) must be in this range for the hopper to be considered healthy |
 | `reset_noise_scale`                          | **float** | `5e-3`                | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                                  |
 | `exclude_current_positions_from_observation` | **bool**  | `True`                | Whether or not to omit the x-coordinate from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies               |
-
-    ## Version History
-
-    * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
-    * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
-    * v2: All continuous control environments now use mujoco-py >= 1.50
-    * v1: max_time_steps raised to 1000 for robot based tasks. Added reward_threshold to environments.
-    * v0: Initial versions release (1.0.0)
     """
 
     metadata = {
@@ -196,12 +188,12 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
 
         if exclude_current_positions_from_observation:
             observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(11,), dtype=np.float64
+                low=-np.inf, high=np.inf, shape=(6,), dtype=np.float64
                 # gangaroo
             )
         else:
             observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(12,), dtype=np.float64
+                low=-np.inf, high=np.inf, shape=(7,), dtype=np.float64
                 # gangaroo
             )
 
