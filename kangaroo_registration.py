@@ -3,8 +3,8 @@ Add this to line 185 of this (vvvv) file
 C:\Users\\AppData\Local\Programs\Python\Python312\Lib\site-packages\gymnasium\envs\__init__.py
 
 register(
-    id="gym_examples/Kangaroo-v0",
-    entry_point="gym_examples.envs:kangaroo_env",
+    id="Kangaroo-v0",
+    entry_point="gymnasium.envs.mujoco:KangarooEnv",
     max_episode_steps=300,
 )
 
