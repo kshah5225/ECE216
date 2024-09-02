@@ -28,7 +28,7 @@ def test_model(model_path, env_name):
 
 if __name__ == "__main__":
     # Path to the saved model
-    model_path = "ppo_kangaroo"
+    model_path = "3_hops_ppo_kangaroo"
     # Name of the environment
     env_name = 'Kangaroo-v0'
     

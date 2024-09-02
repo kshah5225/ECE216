@@ -1,5 +1,4 @@
 import numpy as np
-
 from gymnasium import utils
 from gymnasium.envs.mujoco import MujocoEnv
 from gymnasium.spaces import Box
@@ -26,19 +25,21 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
 
     def __init__(
         self,
-        forward_reward_weight=1.0,
+        vertical_reward_weight=0.5,
+        forward_reward_weight=2,
         ctrl_cost_weight=1e-3,
         healthy_reward=1.0,
-        terminate_when_unhealthy=False,
+        terminate_when_unhealthy=True,
         healthy_state_range=(-100.0, 100.0),
-        healthy_z_range=(0.7, float("inf")),
-        healthy_angle_range=(-0.2, 0.2),
+        healthy_z_range=(-91.25, float("inf")),
+        healthy_angle_range=(-0.5, 1.5),
         reset_noise_scale=5e-3,
         exclude_current_positions_from_observation=True,
         **kwargs,
     ):
         utils.EzPickle.__init__(
             self,
+            vertical_reward_weight,
             forward_reward_weight,
             ctrl_cost_weight,
             healthy_reward,
@@ -50,7 +51,7 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
             exclude_current_positions_from_observation,
             **kwargs,
         )
-
+        self._vertical_reward_weight = vertical_reward_weight
         self._forward_reward_weight = forward_reward_weight
 
         self._ctrl_cost_weight = ctrl_cost_weight
@@ -70,12 +71,12 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
 
         if exclude_current_positions_from_observation:
             observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(6,), dtype=np.float64
+                low=-np.inf, high=np.inf, shape=(11,), dtype=np.float64
                 # gangaroo
             )
         else:
             observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(7,), dtype=np.float64
+                low=-np.inf, high=np.inf, shape=(12,), dtype=np.float64
                 # gangaroo
             )
 
@@ -111,14 +112,16 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
         healthy_state = np.all(np.logical_and(min_state < state, state < max_state))
         healthy_z = min_z < z < max_z
         healthy_angle = min_angle < angle < max_angle
-
+        print(f"state:{healthy_state}      z:{healthy_z}       angle:{healthy_angle}    all:{all((healthy_state, healthy_z, healthy_angle))}")
         is_healthy = all((healthy_state, healthy_z, healthy_angle))
 
         return is_healthy
 
     @property
     def terminated(self):
-        terminated = not self.is_healthy if self._terminate_when_unhealthy else False
+        print(f"is_healthy{self.is_healthy}")
+        terminated = not self.is_healthy if self._terminate_when_unhealthy else False#terminate when if_healthy is false
+        print(f"is_healthy{self.is_healthy}")
         return terminated
 
     def _get_obs(self):
@@ -142,13 +145,18 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
 
         ctrl_cost = self.control_cost(action)
 
-        forward_reward = self._forward_reward_weight * x_velocity
+        forward_reward = - self._forward_reward_weight * x_velocity
         healthy_reward = self.healthy_reward
+        vertical_reward = (- self.data.qpos[1]) * self._vertical_reward_weight
 
-        rewards = forward_reward + healthy_reward
+        rewards = forward_reward + healthy_reward + vertical_reward
         costs = ctrl_cost
 
+        #print(f"cost:{ctrl_cost} forward:{forward_reward} health:{healthy_reward} vertical:{vertical_reward} vert:{self.data.qpos[1]}")
+
         observation = self._get_obs()
+        
+        #print(f"{self._get_obs()}\n\n")
         reward = rewards - costs
         terminated = self.terminated
         info = {
@@ -158,6 +166,7 @@ class KangarooEnv(MujocoEnv, utils.EzPickle):
 
         if self.render_mode == "human":
             self.render()
+        print(f"return:{terminated}")
         return observation, reward, terminated, False, info
 
     def reset_model(self):

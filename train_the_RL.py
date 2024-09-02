@@ -1,10 +1,12 @@
 import gymnasium as gym
-from stable_baselines3 import A2C
+from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-env = gym.make('Kangaroo-v0', render_mode='human')
+env = gym.make('Kangaroo-v0')#, render_mode='human'
 env = DummyVecEnv([lambda: env])
-model = A2C('MlpPolicy', env, verbose=1, tensorboard_log="logs")
-model.learn(total_timesteps=250000*1000)
-model.save("A2C_kangaroo")
+model = PPO('MlpPolicy', env, verbose=1, tensorboard_log="logs")
+for i in range(10):
+    model.learn(total_timesteps=200000)
+    model.save("models/PPO_kangaroo"+str(i))
+    model.load("models/PPO_kangaroo"+str(i))
 env.close()
