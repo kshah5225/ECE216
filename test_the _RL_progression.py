@@ -18,10 +18,11 @@ if __name__ == "__main__":
         model = PPO.load(model_path+"/"+file, env=env)
         obs = env.reset()
         done = False
-        while not done:
+        steps=0
+        while not done:#steps<500:
             action, _states = model.predict(obs, deterministic=True)
             obs, reward, done, info = env.step(action)
             env.render()
-            print(f"Done?:{done}")
+            steps+=1
         obs = env.reset()
     env.close
