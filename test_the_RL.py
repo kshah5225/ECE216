@@ -4,7 +4,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 
 def test_model(model_path, env_name):
     # Create the environment
-    env = gym.make(env_name, render_mode='human')
+    env = gym.make(env_name, render_mode='human', max_episode_steps=2400*8)
     env = DummyVecEnv([lambda: env])
 
     # Load the trained model
@@ -28,7 +28,7 @@ def test_model(model_path, env_name):
 
 if __name__ == "__main__":
     # Path to the saved model
-    model_path = "PPO_kangaroo_3_hops"
+    model_path = "models1/PPO_kangaroo7"
     # Name of the environment
     env_name = 'Kangaroo-v0'
     
